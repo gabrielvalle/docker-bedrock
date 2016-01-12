@@ -1,0 +1,14 @@
+{
+    "name": "ekandreas/docker-bedrock",
+    "version": "0.1",
+    "description": "Docker environment for Bedrock WordPress project",
+    "authors": [
+        {
+            "name": "Andreas Ek",
+            "email": "andreas@aekab.se"
+        }
+    ],
+    "require": {
+        "deployer/deployer": "~3"
+    }
+}
