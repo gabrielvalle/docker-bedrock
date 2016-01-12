@@ -7,9 +7,7 @@ AEKAB uses this package to enable Docker dev environment for WordPress Bedrock d
 
 Install with composer
 
-Include script in deploy.php before common.php
-
-Set domain name in setting parameter "local_domain"
+Set domain name in settings parameter "local_domain"
 
 Run command dep up
 
