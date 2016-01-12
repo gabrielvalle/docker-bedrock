@@ -2,6 +2,7 @@
     "name": "ekandreas/docker-bedrock",
     "version": "0.1",
     "description": "Docker environment for Bedrock WordPress project",
+    "license": "MIT",
     "authors": [
         {
             "name": "Andreas Ek",
