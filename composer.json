@@ -1,6 +1,6 @@
 {
     "name": "ekandreas/docker-bedrock",
-    "version": "0.1",
+    "version": "0.2",
     "description": "Docker environment for Bedrock WordPress project",
     "license": "MIT",
     "authors": [
@@ -12,12 +12,12 @@
     "require": {
         "deployer/deployer": "~3"
     },
+    "autoload": {
+        "psr-4": {"EkAndreas\\": "src/"}
+    },
     "scripts": {
         "post-package-install": [
             "EkAndreas\\DockerBedrock\\Install::postPackageInstall"
         ]
-    },
-    "autoload": {
-        "psr-4": {"EkAndreas\\": "src/"}
     }
 }
