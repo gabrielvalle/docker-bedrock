@@ -1,4 +1,4 @@
-FROM php:5.5-apache
+FROM php:5.6-apache
 
 MAINTAINER Andreas Ek <andreas@aekab.se>
 
@@ -29,9 +29,3 @@ RUN docker-php-ext-enable xdebug
 RUN chmod +x /tmp/bin/docroot.sh
 
 RUN bin/docroot.sh
-
-WORKDIR "/var/www/html"
-
-EXPOSE 80
-
-
