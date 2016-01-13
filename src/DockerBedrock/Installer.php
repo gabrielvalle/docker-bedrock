@@ -1,8 +1,8 @@
 <?php
 
-namespace EkAndreas;
+namespace EkAndreas\DockerBedrock;
 
-use Composer\Installer\PackageEvent;
+use Composer\Script\Event;
 
 class Installer
 {
@@ -10,10 +10,10 @@ class Installer
     {
         $vendorDir = $event->getComposer()->getConfig()->get('vendor-dir');
         $projectDir = realpath($vendorDir.'/../');
-        $deployContent = file_get_contents(realpath(__DIR__.'/../config/deploy.php'));
+        $deployContent = file_get_contents(realpath(__DIR__.'/../../config/deploy.php'));
         $deployContent = str_replace('the_project.dev', '', $deployContent);
 
-        if( !file_exists(projectDir.'/deploy.dep')) {
+        if( !file_exists($projectDir.'/deploy.dep')) {
 
 	        $deployContent = str_replace(
 	        	['the_project.dev','TIMEZONE'],
