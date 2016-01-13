@@ -12,9 +12,9 @@
     "require": {
         "deployer/deployer": "~3"
     },
-    "scripts": [
+    "scripts": {
         "post-package-install": [
             "EkAndreas\\DockerBedrock\\Install::postPackageInstall"
         ]
-    ]
+    }
 }
