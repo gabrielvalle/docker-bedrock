@@ -7,6 +7,7 @@ AEKAB uses this package to enable Docker dev environment for WordPress Bedrock d
 
 ## Requirements
 [PHP Composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx)
+
 [Docker Machine](https://docs.docker.com/machine/install-machine/) 
 
 ## Step by step, getting started
@@ -31,7 +32,7 @@ Run the containers (php+mysql)
 vendor/bin/dep docker up
 ```
 
-(browse to the_project.dev and start developing)
+(browse to [the_project.dev](http://the_project.dev) and start developing)
 
 Stop the containers (php+mysql)
 ```
@@ -42,4 +43,8 @@ Restart the containers (php+mysql)
 ```
 dep docker restart
 ```
+
+## Parameters
+
+...
 
