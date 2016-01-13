@@ -6,7 +6,7 @@ use Composer\Installer\PackageEvent;
 
 class Installer
 {
-    public static function postInstall(Event $event)
+    public static function postAutoloadDump(Event $event)
     {
         $vendorDir = $event->getComposer()->getConfig()->get('vendor-dir');
         $projectDir = realpath($vendorDir.'/../');

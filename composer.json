@@ -18,8 +18,8 @@
         }
     },
     "scripts": {
-        "post-install-cmd": [
-            "EkAndreas\\Installer::postInstall"
+        "post-autoload-dump": [
+            "EkAndreas\\Installer::postAutoloadDump"
         ]
     }
 }
