@@ -2,12 +2,11 @@
 
 namespace EkAndreas;
 
-use Composer\Script\Event;
 use Composer\Installer\PackageEvent;
 
 class Installer
 {
-    public static function postUpdate(Event $event)
+    public static function postInstall(Event $event)
     {
         $vendorDir = $event->getComposer()->getConfig()->get('vendor-dir');
         $projectDir = realpath($vendorDir.'/../');

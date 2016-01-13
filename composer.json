@@ -18,8 +18,8 @@
         }
     },
     "scripts": {
-        "post-update-cmd": [
-            "EkAndreas\\Installer::postUpdate"
+        "post-install-cmd": [
+            "EkAndreas\\Installer::postInstall"
         ]
     }
 }
