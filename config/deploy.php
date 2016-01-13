@@ -1,5 +1,5 @@
 <?php
-date_default_timezone_set('Europe/Stockholm');
+date_default_timezone_set('TIMEZONE');
 
 include_once 'vendor/ekandreas/docker-bedrock/recipe.php';
 
@@ -36,5 +36,3 @@ task( 'deploy', [
     'cleanup',
     'success'
 ] )->desc( 'Deploy your Bedrock project, eg dep deploy production' );
-
-
