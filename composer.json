@@ -13,11 +13,13 @@
         "deployer/deployer": "~3"
     },
     "autoload": {
-        "psr-0": {"EkAndreas\\Installer": ""}
+        "psr-4": {
+            "EkAndreas\\": "src/"
+        }
     },
     "scripts": {
-        "post-package-install": [
-            "EkAndreas\\Installer::postPackageInstall"
+        "post-update-cmd": [
+            "EkAndreas\\Installer::postUpdate"
         ]
     }
 }
