@@ -5,7 +5,7 @@ include_once 'vendor/ekandreas/docker-bedrock/recipe.php';
 
 env('local.domain','the_project.dev');
 
-server( 'development', 'intra.dev', 2222 )
+server( 'development', 'the_project.dev', 2222 )
     ->env('deploy_path','/var/www/html')
     ->env('branch', 'master')
     ->stage('development')
