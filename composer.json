@@ -13,7 +13,7 @@
         "deployer/deployer": "~3"
     },
     "autoload": {
-        "psr-4": {"EkAndreas\\": "src/"}
+        "psr-0": {"EkAndreas": "src/"}
     },
     "scripts": {
         "post-package-install": [
