@@ -17,7 +17,7 @@
     },
     "scripts": {
         "post-package-install": [
-            "EkAndreas\\DockerBedrock\\Install::postPackageInstall"
+            "EkAndreas\\Install::postPackageInstall"
         ]
     }
 }

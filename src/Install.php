@@ -1,6 +1,6 @@
 <?php
 
-namespace EkAndreas\DockerBedrock;
+namespace EkAndreas;
 
 use Composer\Script\Event;
 use Composer\Installer\PackageEvent;
