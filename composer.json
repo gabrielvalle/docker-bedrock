@@ -16,5 +16,8 @@
         "post-package-install": [
             "EkAndreas\\DockerBedrock\\Install::postPackageInstall"
         ]
+    },
+    "autoload": {
+        "psr-4": {"EkAndreas\\": "src/"}
     }
 }
