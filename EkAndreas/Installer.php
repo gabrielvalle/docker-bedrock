@@ -5,7 +5,7 @@ namespace EkAndreas;
 use Composer\Script\Event;
 use Composer\Installer\PackageEvent;
 
-class Install
+class Installer
 {
     public static function postPackageInstall(PackageEvent $event)
     {
