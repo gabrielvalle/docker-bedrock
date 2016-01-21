@@ -3,7 +3,7 @@
 
 *** WORK IN PROGRESS ***
 
-AEKAB uses this package to enable Docker dev environment for WordPress Bedrock development.
+AEKAB uses this package to enable Docker dev environment for Roots Bedrock project development.
 
 ## Requirements
 [PHP Composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx)
@@ -24,24 +24,19 @@ cd the_project
 
 Install this package with composer and require-dev
 ```
-composer require ekandreas/docker-bedrock:dev-master --dev
+composer require ekandreas/docker-laravel:dev-master --dev
 ```
 
 Run the containers (php+mysql)
 ```
-vendor/bin/dep docker up
+vendor/bin/dep docker:up
 ```
 
 (browse to [the_project.dev](http://the_project.dev) and start developing)
 
 Stop the containers (php+mysql)
 ```
-dep docker stop
-```
-
-Restart the containers (php+mysql)
-```
-dep docker restart
+dep docker:stop
 ```
 
 ## Parameters

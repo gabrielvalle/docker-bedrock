@@ -1,4 +1,9 @@
 <?php
 
-set('local_domain','localhost');
-set('docker_container','dev1');
+set('local.domain','localhost');
+set('docker.container','bedrock');
+set('docker.machine.name','default');
+
+set('mysql.version','5.6');
+set('mysql.database','bedrock');
+set('mysql.password','root');
