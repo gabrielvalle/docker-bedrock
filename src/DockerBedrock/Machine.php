@@ -2,65 +2,68 @@
 
 namespace EkAndreas\DockerBedrock;
 
-class Machine implements ServiceInterface
+class Machine implements ContainerInterface
 {
+    protected $ip;
+    protected $name;
 
-    public static function ensure()
+    public function __construct()
     {
-        $docker_name = get('docker.machine.name');
-        writeln("Ensure docker-machine ".$docker_name);
+        $this->name = get('docker.machine.name');
+        $this->ip = Helpers::getMachineIp();
+    }
 
-        if (!Machine::exists()) {
-            Machine::run();
+    public function ensure()
+    {
+        writeln("Ensure docker-machine ".$this->name);
+
+        if (!$this->exists()) {
+            $this->run();
         }
 
-        $command = Env::get() . "docker-machine status $docker_name";
+        $command = Env::get() . "docker-machine status $this->name";
         $output = runLocally($command);
 
         if (!preg_match('#Running#i', $output, $matches)) {
-            Machine::start();
+            $this->start();
         }
     }
     
-    public static function run()
+    public function run()
     {
-        $docker_name = get('docker.machine.name');
-        writeln("<comment>Create Docker machine $docker_name</comment>");
-        $output = runLocally("docker-machine create -d virtualbox $docker_name");
-        writeln("<comment>Docker-machine $docker_name created</comment>");
+        writeln("<comment>Create Docker machine $this->name</comment>");
+        $output = runLocally("docker-machine create -d virtualbox $this->name");
+        writeln("<comment>Docker-machine $this->name created</comment>");
     }
     
-    public static function kill()
+    public function kill()
     {
     }
     
-    public static function exists()
+    public function exists()
     {
-        $docker_name = get('docker.machine.name');
         $command = "docker-machine ls";
         $output = runLocally($command);
-        if (preg_match('/'.$docker_name.'/i', $output, $matches)) {
+        if (preg_match('/'.$this->name.'/i', $output, $matches)) {
             return true;
         } else {
-        	return false;
+            return false;
         }
     }
     
-    public static function start()
+    public function start()
     {
-        $docker_name = get('docker.machine.name');
-        $output = runLocally("docker-machine start $docker_name");
-        writeln("<comment>Starting docker-machine $docker_name, please wait...</comment>");
+        $output = runLocally("docker-machine start $this->name");
+        writeln("<comment>Starting docker-machine $this->name, please wait...</comment>");
         sleep(20);
     }
 
-    public static function stop()
+    public function stop()
     {
-        $docker_name = get('docker.machine.name');
         try {
-            writeln("Stop docker-machine ".$docker_name);
-            $output = runLocally("docker-machine stop $docker_name");
-            writeln("<comment>Docker-machine $docker_name stopped</comment>");
+            writeln("Stop docker-machine $this->name");
+            $output = runLocally("docker-machine stop $this->name");
+            writeln("<comment>Docker-machine $this->name stopped</comment>");
         } catch (Exception $ex) {
         }
     }

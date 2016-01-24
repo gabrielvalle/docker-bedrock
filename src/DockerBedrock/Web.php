@@ -1,103 +1,74 @@
 <?php
-
 namespace EkAndreas\DockerBedrock;
 
-class Web implements ServiceInterface
+class Web extends Container implements ContainerInterface
 {
-
-    public static function ensure()
+    public function ensure()
     {
-        $ip = Helpers::getMachineIp();
-        $ping = Helpers::portAlive($ip, 80);
+        $ping = Helpers::portAlive($this->ip, 80);
 
         if (!$ping) {
-            if (Web::exists()) {
-                Web::start();
+            if ($this->exists()) {
+                $this->start();
             } else {
-                Web::run();
+                $this->run();
             }
         }
     }
 
-    public static function exists()
+    public function exists()
     {
-        $name = Web::getContainerName();
-
         $command = Env::get() . "docker ps -a";
         $output = runLocally($command);
 
-        if (preg_match('/'.$name.'/i', $output, $matches)) {
+        if (preg_match('/'.$this->container.'/i', $output, $matches)) {
             return true;
         } else {
             return false;
         }
     }
 
-    public static function run()
+    public function run()
     {
-        $ip = Helpers::getMachineIp();
-        $name = get('docker.container') . '_web';
-        $dir = Helpers::getPackageDir();
-        $web_dir = Helpers::getProjectDir();
+        writeln('<comment>New web container ' . $this->container . '</comment>');
 
-        writeln('<comment>New web container</comment>');
-
-        $command = Env::get() . "cd $dir && docker images";
+        $command = Env::get() . "cd {$this->dir} && docker images";
         $output = runLocally($command);
 
         $matches=null;
 
-        if (!preg_match('/'.$name.'\s.*latest\s*([[:alnum:]]+).*/i', $output, $matches)) {
-            writeln('<comment>Building web image</comment>');
-            $command = Env::get() . "cd $dir && docker build -t {$name} --no-cache=true --rm=true .";
+        if (!preg_match('/'.$this->image.'\s.*latest\s*([[:alnum:]]+).*/i', $output, $matches)) {
+            writeln('<comment>Building web image ' . $this->image . '</comment>');
+            $command = Env::get() . "cd {$this->dir} && docker build -t {$this->image} --no-cache=true --rm=true .";
             runLocally($command);
-            preg_match('/'.$name.'\s.*latest\s*([[:alnum:]]+).*/i', $output, $matches);
+            preg_match('/'.$this->image.'\s.*latest\s*([[:alnum:]]+).*/i', $output, $matches);
         }
 
-        $container_name = Web::getContainerName();
-
-        writeln('<comment>Starting new web container</comment>');
-        $command = Env::get() . "cd $dir && docker run -tid -p 80:80 -v '$web_dir:/var/www/html' --name $container_name $name:latest";
+        writeln('<comment>Starting new web container ' . $this->container . '</comment>');
+        $command = Env::get() . "cd $this->dir && docker run -tid -p 80:80 -v '$this->webdir:/var/www/html' --name $this->container $this->image:latest";
         runLocally($command);
-        Helpers::waitForPort('Waiting for web to start', $ip, 80);
+        Helpers::waitForPort('Waiting for web to start', $this->ip, 80);
     }
 
-    public static function start()
+    public function start()
     {
-        $ip = Helpers::getMachineIp();
-        $dir = Helpers::getPackageDir();
-        $container_name = Web::getContainerName();
-
         writeln('<comment>Start existing web container</comment>');
-        $command = Env::get() . "cd $dir && docker start $container_name";
+        $command = Env::get() . "cd $this->dir && docker start $this->container";
         runLocally($command);
-        Helpers::waitForPort('Waiting for web to start', $ip, 80);
+        Helpers::waitForPort('Waiting for web to start', $this->ip, 80);
     }
 
-    public static function stop()
+    public function stop()
     {
-        $name = Web::getContainerName();
-
         writeln('<comment>Stop running web</comment>');
-        $command = Env::get() . "docker stop $name";
+        $command = Env::get() . "docker stop $this->container";
         runLocally($command);
     }
     
-    public static function kill()
+    public function kill()
     {
-        $name = Web::getContainerName();
-
         writeln('<comment>Kill web container</comment>');
-        $command = Env::get() . "docker rm -f $name";
+        $command = Env::get() . "docker rm -f $this->container";
         runLocally($command);
-    }
-
-    public static function getContainerName()
-    {
-        $dir = Helpers::getPackageDir();
-        $web_dir = Helpers::getProjectDir();
-
-        $container_name = basename($web_dir);
-        return $container_name;
     }
 }

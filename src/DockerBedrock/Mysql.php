@@ -1,29 +1,24 @@
 <?php
-
 namespace EkAndreas\DockerBedrock;
 
-class Mysql implements ServiceInterface
+class Mysql extends Container implements ContainerInterface
 {
-
-    public static function ensure()
+    public function ensure()
     {
-        $ip = Helpers::getMachineIp();
-        $ping = Helpers::portAlive($ip, 3306);
+        $ping = Helpers::portAlive($this->ip, 3306);
 
         if (!$ping) {
-            if (Mysql::exists()) {
-                Mysql::start();
+            if ($this->exists()) {
+                $this->start();
             } else {
-                Mysql::run();
+                $this->run();
             }
         }
     }
 
-    public static function exists()
+    public function exists()
     {
-        $name = get('docker.container') . '_mysql';
-        $command = Env::get() . "docker inspect $name";
-
+        $command = Env::get() . "docker inspect $this->container";
         try {
 	        $output = runLocally($command);
             return true;
@@ -33,42 +28,36 @@ class Mysql implements ServiceInterface
 
     }
 
-    public static function run()
+    public function run()
     {
-    	writeln('<comment>Run/new Mysql container</comment>');
-        $ip = Helpers::getMachineIp();
-        $name = get('docker.container') . '_mysql';
+    	writeln("<comment>Run/new mysql container $this->container</comment>");
         $db = get('mysql.database');
         $password = get('mysql.password');
         $version = get('mysql.version');
-        $command = Env::get() . "docker run --name $name -e MYSQL_ROOT_PASSWORD=$password -e MYSQL_DATABASE=$db -p 3306:3306 -d mysql:$version";
+        $command = Env::get() . "docker run --name $this->container -e MYSQL_ROOT_PASSWORD=$password -e MYSQL_DATABASE=$db -p 3306:3306 -d mysql:$version";
         runLocally($command);
-        Helpers::waitForPort('Waiting for mysql to start', $ip, 3306);
+        Helpers::waitForPort('Waiting for mysql to start', $this->ip, 3306);
     }
 
-    public static function start()
+    public function start()
     {
-    	writeln('<comment>Start existing Mysql</comment>');
-        $ip = Helpers::getMachineIp();
-        $name = get('docker.container') . '_mysql';
-        $command = Env::get() . "docker start $name";
+    	writeln("<comment>Start existing mysql $this->container</comment>");
+        $command = Env::get() . "docker start $this->container";
         runLocally($command);
-        Helpers::waitForPort('Waiting for mysql to start', $ip, 3306);
+        Helpers::waitForPort('Waiting for mysql to start', $this->ip, 3306);
     }
 
-    public static function stop()
+    public function stop()
     {
-    	writeln('<comment>Stop running Mysql</comment>');
-        $name = get('docker.container') . '_mysql';
-        $command = Env::get() . "docker stop $name";
+    	writeln("<comment>Stop running mysql $this->container</comment>");
+        $command = Env::get() . "docker stop $this->container";
         runLocally($command);
     }
     
-    public static function kill()
+    public function kill()
     {
-    	writeln('<comment>Kill Mysql container</comment>');
-        $name = get('docker.container') . '_mysql';
-        $command = Env::get() . "docker rm -f $name";
+    	writeln("<comment>Kill Mysql container $this->container</comment>");
+        $command = Env::get() . "docker rm -f $this->container";
         runLocally($command);
     }
 }

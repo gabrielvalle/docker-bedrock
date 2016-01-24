@@ -1,32 +1,55 @@
 <?php
 
-task('docker:start', function() {
-	
-	EkAndreas\DockerBedrock\Machine::ensure();
-	EkAndreas\DockerBedrock\Mysql::ensure();
-	EkAndreas\DockerBedrock\Web::ensure();
+task('docker:start', function () {
+    
+    $machine = new EkAndreas\DockerBedrock\Machine();
+    $machine->ensure();
 
-},999);
+    $mysql_name = get('docker.container') . '_mysql';
+    $mysql = new EkAndreas\DockerBedrock\Mysql($mysql_name);
+    $mysql->ensure();
 
-task('docker:up', function() {
-	
-	EkAndreas\DockerBedrock\Machine::ensure();
-	EkAndreas\DockerBedrock\Mysql::ensure();
-	EkAndreas\DockerBedrock\Web::ensure();
+    $web_name = basename(EkAndreas\DockerBedrock\Helpers::getProjectDir());
+    $web = new EkAndreas\DockerBedrock\Web($web_name);
+    $web->ensure();
 
-},999);
+}, 999);
 
-task('docker:stop', function() {
-	
-	EkAndreas\DockerBedrock\Mysql::stop();
-	EkAndreas\DockerBedrock\Web::stop();
+task('docker:up', function () {
+    
+    $machine = new EkAndreas\DockerBedrock\Machine();
+    $machine->ensure();
+
+    $mysql_name = get('docker.container') . '_mysql';
+    $mysql = new EkAndreas\DockerBedrock\Mysql($mysql_name);
+    $mysql->ensure();
+
+    $web_name = basename(EkAndreas\DockerBedrock\Helpers::getProjectDir());
+    $web = new EkAndreas\DockerBedrock\Web($web_name);
+    $web->ensure();
+
+}, 999);
+
+task('docker:stop', function () {
+    
+    $mysql_name = get('docker.container') . '_mysql';
+    $mysql = new EkAndreas\DockerBedrock\Mysql($mysql_name);
+    $mysql->stop();
+
+    $web_name = basename(EkAndreas\DockerBedrock\Helpers::getProjectDir());
+    $web = new EkAndreas\DockerBedrock\Web($web_name);
+    $web->stop();
 
 });
 
-task('docker:halt', function() {
-	
-	EkAndreas\DockerBedrock\Mysql::stop();
-	EkAndreas\DockerBedrock\Web::stop();
+task('docker:halt', function () {
+    
+    $mysql_name = get('docker.container') . '_mysql';
+    $mysql = new EkAndreas\DockerBedrock\Mysql($mysql_name);
+    $mysql->stop();
+
+    $web_name = basename(EkAndreas\DockerBedrock\Helpers::getProjectDir());
+    $web = new EkAndreas\DockerBedrock\Web($web_name);
+    $web->stop();
 
 });
-

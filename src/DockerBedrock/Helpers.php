@@ -4,7 +4,6 @@ namespace EkAndreas\DockerBedrock;
 
 class Helpers
 {
-
     static public function waitForPort($waiting_message, $ip, $port)
     {
         write($waiting_message);
