@@ -5,5 +5,3 @@ set('docker.container','bedrock');
 set('docker.machine.name','default');
 
 set('mysql.version','5.6');
-set('mysql.database','bedrock');
-set('mysql.password','root');
