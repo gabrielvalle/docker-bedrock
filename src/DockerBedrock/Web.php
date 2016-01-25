@@ -36,17 +36,22 @@ class Web extends Container implements ContainerInterface
         $output = runLocally($command);
 
         $matches=null;
-
         if (!preg_match('/'.$this->image.'\s.*latest\s*([[:alnum:]]+).*/i', $output, $matches)) {
+
+            // shift Dockerfile?
+            if (file_exists(Helpers::getProjectDir().'/Dockerfile')) {
+                copy(Helpers::getProjectDir().'/Dockerfile',Helpers::getPackageDir().'/Dockerfile');
+            }
+                     
             writeln('<comment>Building web image ' . $this->image . '</comment>');
             $command = Env::get() . "cd {$this->dir} && docker build -t {$this->image} --no-cache=true --rm=true .";
-            runLocally($command);
+            runLocally($command, 999);
             preg_match('/'.$this->image.'\s.*latest\s*([[:alnum:]]+).*/i', $output, $matches);
         }
 
         writeln('<comment>Starting new web container ' . $this->container . '</comment>');
         $command = Env::get() . "cd $this->dir && docker run -tid -p 80:80 -v '$this->webdir:/var/www/html' --name $this->container $this->image:latest";
-        runLocally($command);
+        runLocally($command, 999);
         Helpers::waitForPort('Waiting for web to start', $this->ip, 80);
     }
 
