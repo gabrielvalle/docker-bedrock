@@ -66,8 +66,10 @@ class Mysql extends Container implements ContainerInterface
     
     public function kill()
     {
-        writeln("<comment>Kill Mysql container $this->container</comment>");
-        $command = Env::get() . "docker rm -f $this->container";
-        runLocally($command);
+        if( $this->exists() ) {
+            writeln("<comment>Kill Mysql container $this->container</comment>");
+            $command = Env::get() . "docker rm -f $this->container";
+            runLocally($command);
+        }
     }
 }

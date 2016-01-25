@@ -43,6 +43,11 @@ class Web extends Container implements ContainerInterface
                 copy(Helpers::getProjectDir().'/Dockerfile',Helpers::getPackageDir().'/Dockerfile');
             }
                      
+            // shift php.ini?
+            if (file_exists(Helpers::getProjectDir().'/config/php.ini')) {
+                copy(Helpers::getProjectDir().'/config/php.ini',Helpers::getPackageDir().'/config/php.ini');
+            }
+                     
             writeln('<comment>Building web image ' . $this->image . '</comment>');
             $command = Env::get() . "cd {$this->dir} && docker build -t {$this->image} --no-cache=true --rm=true .";
             runLocally($command, 999);
@@ -72,8 +77,18 @@ class Web extends Container implements ContainerInterface
     
     public function kill()
     {
-        writeln('<comment>Kill web container</comment>');
-        $command = Env::get() . "docker rm -f $this->container";
-        runLocally($command);
+        if( $this->exists() ) {
+            writeln('<comment>Kill web container</comment>');
+            $command = Env::get() . "docker rm -f $this->container";
+            runLocally($command);
+        }
+
+        $command = Env::get() . "cd {$this->dir} && docker images";
+        $output = runLocally($command);
+        if (preg_match('/'.$this->image.'\s.*latest\s*([[:alnum:]]+).*/i', $output, $matches)) {
+            $command = Env::get() . "cd {$this->dir} && docker rmi $this->image";
+            runLocally($command);
+        }
+
     }
 }

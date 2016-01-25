@@ -53,3 +53,15 @@ task('docker:halt', function () {
     $web->stop();
 
 });
+
+task('docker:kill', function () {
+    
+    $mysql_name = get('docker.container') . '_mysql';
+    $mysql = new EkAndreas\DockerBedrock\Mysql($mysql_name);
+    $mysql->kill();
+
+    $web_name = basename(EkAndreas\DockerBedrock\Helpers::getProjectDir());
+    $web = new EkAndreas\DockerBedrock\Web($web_name);
+    $web->kill();
+
+});
