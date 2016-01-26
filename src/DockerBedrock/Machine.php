@@ -32,7 +32,7 @@ class Machine implements ContainerInterface
     public function run()
     {
         writeln("<comment>Create Docker machine $this->name</comment>");
-        $output = runLocally("docker-machine create -d virtualbox $this->name");
+        $output = runLocally("docker-machine create -d virtualbox $this->name", 999);
         writeln("<comment>Docker-machine $this->name created</comment>");
     }
     
@@ -53,7 +53,7 @@ class Machine implements ContainerInterface
     
     public function start()
     {
-        $output = runLocally("docker-machine start $this->name");
+        $output = runLocally("docker-machine start $this->name", 999);
         writeln("<comment>Starting docker-machine $this->name, please wait...</comment>");
         sleep(20);
     }
