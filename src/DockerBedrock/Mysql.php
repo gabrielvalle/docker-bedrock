@@ -51,10 +51,22 @@ class Mysql extends Container implements ContainerInterface
 
     public function start()
     {
+        $env = Env::getDotEnv();
+        $db = getenv('DB_NAME');
+        $password = getenv('DB_PASSWORD');
+        $user = getenv('DB_USER');
+
         writeln("<comment>Start existing mysql $this->container</comment>");
         $command = Env::get() . "docker start $this->container";
         runLocally($command);
         Helpers::waitForPort('Waiting for mysql to start', $this->ip, 3306);
+
+        writeln("Ensures that database '$db' exists in container {$this->container}");
+        $sql = "mysql -u$user -p$password -s -e ";
+        $sql .= "\"CREATE DATABASE IF NOT EXISTS $db; GRANT ALL ON *.* TO '$user'@'%' IDENTIFIED BY '$password'; FLUSH PRIVILEGES;\"";
+        $command = Env::get() . "docker exec $this->container $sql";
+        runLocally($command);
+
     }
 
     public function stop()
