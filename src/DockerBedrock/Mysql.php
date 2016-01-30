@@ -18,7 +18,7 @@ class Mysql extends Container implements ContainerInterface
 
     public function exists()
     {
-        $command = Env::get() . "docker inspect $this->container";
+        $command = Env::evalDocker() . "docker inspect $this->container";
         try {
             $output = runLocally($command);
             return true;
@@ -36,8 +36,8 @@ class Mysql extends Container implements ContainerInterface
         $password = getenv('DB_PASSWORD');
         $user = getenv('DB_USER');
 
-        $version = get('mysql.version');
-        $command = Env::get() . "docker run --name $this->container ";
+        $version = has('mysql.version') ? get('mysql.version') : '5.6';
+        $command = "docker run --name $this->container ";
         $command .= "-e MYSQL_ROOT_PASSWORD=$password ";
         $command .= "-e MYSQL_DATABASE=$db ";
         if ($user!='root') {
@@ -45,7 +45,7 @@ class Mysql extends Container implements ContainerInterface
             $command .= "-e MYSQL_PASSWORD=$password ";
         }
         $command .= "-p 3306:3306 -d mysql:$version";
-        runLocally($command);
+        Helpers::doLocal($command);
         Helpers::waitForPort('Waiting for mysql to start', $this->ip, 3306);
     }
 
@@ -57,31 +57,31 @@ class Mysql extends Container implements ContainerInterface
         $user = getenv('DB_USER');
 
         writeln("<comment>Start existing mysql $this->container</comment>");
-        $command = Env::get() . "docker start $this->container";
-        runLocally($command);
+        $command = "docker start $this->container";
+        Helpers::doLocal($command);
         Helpers::waitForPort('Waiting for mysql to start', $this->ip, 3306);
 
         writeln("Ensures that database '$db' exists in container {$this->container}");
         $sql = "mysql -u$user -p$password -s -e ";
         $sql .= "\"CREATE DATABASE IF NOT EXISTS $db; GRANT ALL ON *.* TO '$user'@'%' IDENTIFIED BY '$password'; FLUSH PRIVILEGES;\"";
-        $command = Env::get() . "docker exec $this->container $sql";
-        runLocally($command);
+        $command = "docker exec $this->container $sql";
+        Helpers::doLocal($command);
 
     }
 
     public function stop()
     {
         writeln("<comment>Stop running mysql $this->container</comment>");
-        $command = Env::get() . "docker stop $this->container";
-        runLocally($command);
+        $command = "docker stop $this->container";
+        Helpers::doLocal($command);
     }
     
     public function kill()
     {
         if( $this->exists() ) {
             writeln("<comment>Kill Mysql container $this->container</comment>");
-            $command = Env::get() . "docker rm -f $this->container";
-            runLocally($command);
+            $command = "docker rm -f $this->container";
+            Helpers::doLocal($command);
         }
     }
 }

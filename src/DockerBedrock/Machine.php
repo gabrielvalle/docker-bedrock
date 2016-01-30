@@ -9,7 +9,7 @@ class Machine implements ContainerInterface
 
     public function __construct()
     {
-        $this->name = get('docker.machine.name');
+        $this->name = env('server.host');
         $this->ip = Helpers::getMachineIp();
     }
 
@@ -21,8 +21,8 @@ class Machine implements ContainerInterface
             $this->run();
         }
 
-        $command = Env::get() . "docker-machine status $this->name";
-        $output = runLocally($command);
+        $command = "docker-machine status $this->name";
+        $output = Helpers::doLocal($command);
 
         if (!preg_match('#Running#i', $output, $matches)) {
             $this->start();

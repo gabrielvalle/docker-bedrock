@@ -18,9 +18,9 @@ class Elasticsearch extends Container implements ContainerInterface
 
     public function exists()
     {
-        $command = Env::get() . "docker inspect $this->container";
+        $command = "docker inspect $this->container";
         try {
-            $output = runLocally($command);
+            $output = Helpers::doLocal($command);
             return true;
         } catch (\Exception $ex) {
             return false;
@@ -30,31 +30,31 @@ class Elasticsearch extends Container implements ContainerInterface
     public function run()
     {
         writeln("<comment>Run/new elasticsearch container $this->container</comment>");
-        $command = Env::get() . "docker run --name $this->container -d -p 9200:9200 elasticsearch";
-        runLocally($command);
+        $command = "docker run --name $this->container -d -p 9200:9200 elasticsearch";
+        Helpers::doLocal($command);
         Helpers::waitForPort('Waiting for elasticsearch to start', $this->ip, 9200);
     }
 
     public function start()
     {
         writeln("<comment>Start existing elasticsearch container $this->container</comment>");
-        $command = Env::get() . "docker start $this->container";
-        runLocally($command);
+        $command = "docker start $this->container";
+        Helpers::doLocal($command);
         Helpers::waitForPort('Waiting for elasticsearch to start', $this->ip, 9200);
     }
 
     public function stop()
     {
         writeln("<comment>Stop running elasticsearch $this->container</comment>");
-        $command = Env::get() . "docker stop $this->container";
-        runLocally($command);
+        $command = "docker stop $this->container";
+        Helpers::doLocal($command);
     }
     
     public function kill()
     {
         if( $this->exists() ) {
             writeln("<comment>Kill elasticsearch container $this->container</comment>");
-            $command = Env::get() . "docker rm -f $this->container";
+            $command = Env::evalDocker() . "docker rm -f $this->container";
             runLocally($command);
         }
     }

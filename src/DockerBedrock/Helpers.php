@@ -36,7 +36,7 @@ class Helpers
             return $result;
         }
         else {
-            $docker_name = get('docker.machine.name');
+            $docker_name = env('server.host');
             writeln("Getting environment data from $docker_name");
             $output = runLocally("docker-machine env $docker_name");
             if( preg_match('#DOCKER_HOST\=\"tcp:\/\/(.*):#i', $output, $matches) ) {
@@ -57,6 +57,10 @@ class Helpers
         $dir = Helpers::getPackageDir();
         $web_dir = realpath("$dir/../../../");
         return $web_dir;
+    }
+
+    static function doLocal($command, $timeout=999) {
+        return runLocally(Env::evalDocker() . $command, $timeout);
     }
 
 }

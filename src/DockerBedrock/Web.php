@@ -18,8 +18,8 @@ class Web extends Container implements ContainerInterface
 
     public function exists()
     {
-        $command = Env::get() . "docker ps -a";
-        $output = runLocally($command);
+        $command = "docker ps -a";
+        $output = Helpers::doLocal($command);
 
         if (preg_match('/'.$this->container.'/i', $output, $matches)) {
             return true;
@@ -32,8 +32,8 @@ class Web extends Container implements ContainerInterface
     {
         writeln('<comment>New web container ' . $this->container . '</comment>');
 
-        $command = Env::get() . "cd {$this->dir} && docker images";
-        $output = runLocally($command);
+        $command = "cd {$this->dir} && docker images";
+        $output = Helpers::doLocal($command);
 
         $matches=null;
         if (!preg_match('/'.$this->image.'\s.*latest\s*([[:alnum:]]+).*/i', $output, $matches)) {
@@ -49,45 +49,45 @@ class Web extends Container implements ContainerInterface
             }
                      
             writeln('<comment>Building web image ' . $this->image . '</comment>');
-            $command = Env::get() . "cd {$this->dir} && docker build -t {$this->image} --no-cache=true --rm=true .";
-            runLocally($command, 999);
+            $command = "cd {$this->dir} && docker build -t {$this->image} --no-cache=true --rm=true .";
+            Helpers::doLocal($command, 999);
             preg_match('/'.$this->image.'\s.*latest\s*([[:alnum:]]+).*/i', $output, $matches);
         }
 
         writeln('<comment>Starting new web container ' . $this->container . '</comment>');
-        $command = Env::get() . "cd $this->dir && docker run -tid -p 80:80 -v '$this->webdir:/var/www/html' --name $this->container $this->image:latest";
-        runLocally($command, 999);
+        $command = "cd $this->dir && docker run -tid -p 80:80 -v '$this->webdir:/var/www/html' --name $this->container $this->image:latest";
+        Helpers::doLocal($command, 999);
         Helpers::waitForPort('Waiting for web to start', $this->ip, 80);
     }
 
     public function start()
     {
         writeln('<comment>Start existing web container</comment>');
-        $command = Env::get() . "cd $this->dir && docker start $this->container";
-        runLocally($command);
+        $command = "cd $this->dir && docker start $this->container";
+        Helpers::doLocal($command);
         Helpers::waitForPort('Waiting for web to start', $this->ip, 80);
     }
 
     public function stop()
     {
         writeln('<comment>Stop running web</comment>');
-        $command = Env::get() . "docker stop $this->container";
-        runLocally($command);
+        $command = "docker stop $this->container";
+        Helpers::doLocal($command);
     }
     
     public function kill()
     {
         if( $this->exists() ) {
             writeln('<comment>Kill web container</comment>');
-            $command = Env::get() . "docker rm -f $this->container";
-            runLocally($command);
+            $command = "docker rm -f $this->container";
+            Helpers::doLocal($command);
         }
 
-        $command = Env::get() . "cd {$this->dir} && docker images";
-        $output = runLocally($command);
+        $command = "cd {$this->dir} && docker images";
+        $output = Helpers::doLocal($command);
         if (preg_match('/'.$this->image.'\s.*latest\s*([[:alnum:]]+).*/i', $output, $matches)) {
-            $command = Env::get() . "cd {$this->dir} && docker rmi $this->image";
-            runLocally($command);
+            $command = "cd {$this->dir} && docker rmi $this->image";
+            Helpers::doLocal($command);
         }
 
     }
