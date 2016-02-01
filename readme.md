@@ -14,12 +14,12 @@ AEKAB uses this package to enable Docker dev environment for Roots Bedrock proje
 
 Install Bedrock
 ```bash
-composer create-project roots/bedrock the_project
+composer create-project roots/bedrock theproject
 ```
 
 Step into the project folder
 ```bash
-cd the_project
+cd theproject
 ```
 
 Install this package with composer and require-dev
@@ -32,7 +32,7 @@ Create a deploy file in root, eg:
 <?php
 include_once 'vendor/ekandreas/docker-bedrock/recipe.php';
 
-server('the_project.dev', 'default')
+server('theproject.dev', 'default')
     ->env('container', 'bedrock')
     ->stage('development');
 ```
@@ -42,7 +42,8 @@ Run the containers (php+mysql)
 vendor/bin/dep docker:up development
 ```
 
-(browse to [the_project.dev](http://the_project.dev) and start develop your awesome web app)
+**Note!** Change your DNS so that the URL points to the docker machine!
+Then browse to [the_project.dev](http://the_project.dev) and start develop your awesome web app.
 
 Stop the containers (php+mysql)
 ```bash
