@@ -37,15 +37,15 @@ server('theproject.dev', 'default')
     ->stage('development');
 ```
 
-Run the containers (php+mysql)
+Run the containers (php+mysql+elasticsearch)
 ```bash
 vendor/bin/dep docker:up development
 ```
 
 **Note!** Change your DNS so that the URL points to the docker machine!
-Then browse to [the_project.dev](http://the_project.dev) and start develop your awesome web app.
+Then browse to [theproject.dev](http://theproject.dev) and start develop your awesome web app.
 
-Stop the containers (php+mysql)
+Stop the containers (php+mysql+elasticsearch)
 ```bash
 dep docker:stop development
 ```
