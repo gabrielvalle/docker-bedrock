@@ -3,6 +3,7 @@ namespace EkAndreas\DockerBedrock;
 
 class Mysql extends Container implements ContainerInterface
 {
+
     public function ensure()
     {
         $ping = Helpers::portAlive($this->ip, 3306);
@@ -67,6 +68,11 @@ class Mysql extends Container implements ContainerInterface
         $command = "docker exec $this->container $sql";
         Helpers::doLocal($command);
 
+        writeln("Ensures that test database '$db_tests' exists in container {$this->container}");
+        $sql = "mysql -u$user -p$password -s -e ";
+        $sql .= "\"CREATE DATABASE IF NOT EXISTS {$db}_tests; GRANT ALL ON *.* TO '$user'@'%' IDENTIFIED BY '$password'; FLUSH PRIVILEGES;\"";
+        $command = "docker exec $this->container $sql";
+        Helpers::doLocal($command);
     }
 
     public function stop()

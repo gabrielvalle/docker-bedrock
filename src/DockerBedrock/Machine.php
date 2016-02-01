@@ -20,14 +20,14 @@ class Machine implements ContainerInterface
             $this->run();
         }
 
-        $this->ip = Helpers::getMachineIp();
-
         $command = "docker-machine status $this->name";
         $output = Helpers::doLocal($command);
 
         if (!preg_match('#Running#i', $output, $matches)) {
             $this->start();
         }
+
+        $this->ip = Helpers::getMachineIp();
     }
     
     public function run()

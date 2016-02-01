@@ -4,6 +4,51 @@ namespace EkAndreas\DockerBedrock;
 
 class Helpers
 {
+    static function start() {
+        $machine = new Machine();
+        $machine->ensure();
+
+        $mysql_name = get('docker.container') . '_mysql';
+        $mysql = new Mysql($mysql_name);
+        $mysql->ensure();
+
+        $elastic_name = get('docker.container') . '_elastic';
+        $elastic = new Elasticsearch($elastic_name);
+        $elastic->ensure();
+
+        $web_name = basename(EkAndreas\DockerBedrock\Helpers::getProjectDir());
+        $web = new Web($web_name);
+        $web->ensure();
+    }
+
+    static function stop() {
+        $mysql_name = get('docker.container') . '_mysql';
+        $mysql = new Mysql($mysql_name);
+        $mysql->stop();
+
+        $elastic_name = get('docker.container') . '_elastic';
+        $elastic = new Elasticsearch($elastic_name);
+        $elastic->stop();
+
+        $web_name = basename(EkAndreas\DockerBedrock\Helpers::getProjectDir());
+        $web = new Web($web_name);
+        $web->stop();
+    }
+
+    static function kill() {
+        $mysql_name = get('docker.container') . '_mysql';
+        $mysql = new Mysql($mysql_name);
+        $mysql->kill();
+
+        $elastic_name = get('docker.container') . '_elastic';
+        $elastic = new Elasticsearch($elastic_name);
+        $elastic->kill();
+
+        $web_name = basename(EkAndreas\DockerBedrock\Helpers::getProjectDir());
+        $web = new Web($web_name);
+        $web->kill();
+    }
+
     static public function waitForPort($waiting_message, $ip, $port)
     {
         write($waiting_message);
@@ -60,6 +105,10 @@ class Helpers
     }
 
     static function doLocal($command, $timeout=999) {
+        writeln('===================================================');
+        writeln('Running command:');
+        writeln($command);
+        writeln('===================================================');
         return runLocally(Env::evalDocker() . $command, $timeout);
     }
 
