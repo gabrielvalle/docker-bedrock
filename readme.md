@@ -23,20 +23,30 @@ cd the_project
 ```
 
 Install this package with composer and require-dev
+```bash
+composer require ekandreas/docker-bedrock:dev-master --dev
 ```
-composer require ekandreas/docker-laravel:dev-master --dev
+
+Create a deploy file in root, eg:
+```php
+<?php
+include_once 'vendor/ekandreas/docker-bedrock/recipe.php';
+
+server('the_project.dev', 'default')
+    ->env('container', 'bedrock')
+    ->stage('development');
 ```
 
 Run the containers (php+mysql)
-```
-vendor/bin/dep docker:up
+```bash
+vendor/bin/dep docker:up development
 ```
 
-(browse to [the_project.dev](http://the_project.dev) and start developing)
+(browse to [the_project.dev](http://the_project.dev) and start develop your awesome web app)
 
 Stop the containers (php+mysql)
-```
-dep docker:stop
+```bash
+dep docker:stop development
 ```
 
 ## Parameters
