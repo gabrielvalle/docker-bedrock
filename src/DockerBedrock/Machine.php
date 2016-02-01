@@ -10,7 +10,6 @@ class Machine implements ContainerInterface
     public function __construct()
     {
         $this->name = env('server.host');
-        $this->ip = Helpers::getMachineIp();
     }
 
     public function ensure()
@@ -20,6 +19,8 @@ class Machine implements ContainerInterface
         if (!$this->exists()) {
             $this->run();
         }
+
+        $this->ip = Helpers::getMachineIp();
 
         $command = "docker-machine status $this->name";
         $output = Helpers::doLocal($command);
@@ -34,6 +35,7 @@ class Machine implements ContainerInterface
         writeln("<comment>Create Docker machine $this->name</comment>");
         $output = runLocally("docker-machine create -d virtualbox $this->name", 999);
         writeln("<comment>Docker-machine $this->name created</comment>");
+        $this->ip = Helpers::getMachineIp();
     }
     
     public function kill()
