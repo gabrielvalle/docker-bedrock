@@ -15,97 +15,22 @@ use EkAndreas\DockerBedrock\Elasticsearch;
 use EkAndreas\DockerBedrock\Env;
 
 task('docker:start', function () {
-    
-    Env::ensure('docker');
-
-    $machine = new Machine();
-    $machine->ensure();
-
-    $mysql_name = env('container') . '_mysql';
-    $mysql = new Mysql($mysql_name);
-    $mysql->ensure();
-
-    $elastic_name = env('container') . '_elastic';
-    $elastic = new Elasticsearch($elastic_name);
-    $elastic->ensure();
-
-    $web_name = basename(Helpers::getProjectDir());
-    $web = new Web($web_name);
-    $web->ensure();
-
+    Helpers::start();    
 }, 999);
 
 task('docker:up', function () {
-    
-    Env::ensure('docker');
-
-    $machine = new Machine();
-    $machine->ensure();
-
-    $mysql_name = env('container') . '_mysql';
-    $mysql = new Mysql($mysql_name);
-    $mysql->ensure();
-
-    $elastic_name = env('container') . '_elastic';
-    $elastic = new Elasticsearch($elastic_name);
-    $elastic->ensure();
-
-    $web_name = basename(Helpers::getProjectDir());
-    $web = new Web($web_name);
-    $web->ensure();
-
+    Helpers::start();    
 }, 999);
 
 task('docker:stop', function () {
-    
-    Env::ensure('docker');
-
-    $mysql_name = env('container') . '_mysql';
-    $mysql = new Mysql($mysql_name);
-    $mysql->stop();
-
-    $elastic_name = env('container') . '_elastic';
-    $elastic = new Elasticsearch($elastic_name);
-    $elastic->stop();
-
-    $web_name = basename(Helpers::getProjectDir());
-    $web = new Web($web_name);
-    $web->stop();
-
+    Helpers::stop();    
 });
 
 task('docker:halt', function () {
-    
-    Env::ensure('docker');
-
-    $mysql_name = env('container') . '_mysql';
-    $mysql = new Mysql($mysql_name);
-    $mysql->stop();
-
-    $elastic_name = env('container') . '_elastic';
-    $elastic = new Elasticsearch($elastic_name);
-    $elastic->stop();
-
-    $web_name = basename(Helpers::getProjectDir());
-    $web = new Web($web_name);
-    $web->stop();
-
+    Helpers::stop();    
 });
 
 task('docker:kill', function () {
-    
-    Env::ensure('docker');
-
-    $mysql_name = env('container') . '_mysql';
-    $mysql = new Mysql($mysql_name);
-    $mysql->kill();
-
-    $elastic_name = env('container') . '_elastic';
-    $elastic = new Elasticsearch($elastic_name);
-    $elastic->kill();
-
-    $web_name = basename(Helpers::getProjectDir());
-    $web = new Web($web_name);
-    $web->kill();
-
+    Helpers::kill();    
 });
+
