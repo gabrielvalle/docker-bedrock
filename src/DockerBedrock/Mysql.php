@@ -55,6 +55,7 @@ class Mysql extends Container implements ContainerInterface
     {
         $env = Env::getDotEnv();
         $db = getenv('DB_NAME');
+        $db_tests = getenv('DB_NAME').'_tests';
         $password = getenv('DB_PASSWORD');
         $user = getenv('DB_USER');
 
@@ -71,7 +72,7 @@ class Mysql extends Container implements ContainerInterface
 
         writeln("Ensures that test database '$db_tests' exists in container {$this->container}");
         $sql = "mysql -u$user -p$password -s -e ";
-        $sql .= "\"CREATE DATABASE IF NOT EXISTS {$db}_tests; GRANT ALL ON *.* TO '$user'@'%' IDENTIFIED BY '$password'; FLUSH PRIVILEGES;\"";
+        $sql .= "\"CREATE DATABASE IF NOT EXISTS {$db}_tests; GRANT ALL ON *.* TO '$user'@'%' IDENTIFIED BY ''; FLUSH PRIVILEGES;\"";
         $command = "docker exec $this->container $sql";
         Helpers::doLocal($command);
     }
