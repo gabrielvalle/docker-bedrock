@@ -35,8 +35,8 @@ class Helpers
 
         $web_name = basename(self::getProjectDir());
         $web_name .= '_web';
-        //$web = new Web($web_name);
-        //$web->stop();
+        $web = new Web($web_name);
+        $web->stop();
     }
 
     public static function kill()

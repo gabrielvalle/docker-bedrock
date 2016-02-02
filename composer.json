@@ -1,6 +1,6 @@
 {
     "name": "ekandreas/docker-bedrock",
-    "version": "0.8.6",
+    "version": "0.8.7",
     "description": "Docker environment for Roots Bedrock projects",
     "license": "MIT",
     "authors": [
