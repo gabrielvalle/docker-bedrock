@@ -16,7 +16,7 @@ class Helpers
         $elastic = new Elasticsearch($elastic_name);
         $elastic->ensure();
 
-        $web_name = basename(EkAndreas\DockerBedrock\Helpers::getProjectDir());
+        $web_name = basename(EkAndreas\DockerBedrock\Helpers::getProjectDir()).'_web';
         $web = new Web($web_name);
         $web->ensure();
     }
@@ -30,7 +30,7 @@ class Helpers
         $elastic = new Elasticsearch($elastic_name);
         $elastic->stop();
 
-        $web_name = basename(EkAndreas\DockerBedrock\Helpers::getProjectDir());
+        $web_name = basename(EkAndreas\DockerBedrock\Helpers::getProjectDir()).'_web';
         $web = new Web($web_name);
         $web->stop();
     }
@@ -44,7 +44,7 @@ class Helpers
         $elastic = new Elasticsearch($elastic_name);
         $elastic->kill();
 
-        $web_name = basename(EkAndreas\DockerBedrock\Helpers::getProjectDir());
+        $web_name = basename(EkAndreas\DockerBedrock\Helpers::getProjectDir()).'_web';
         $web = new Web($web_name);
         $web->kill();
     }
