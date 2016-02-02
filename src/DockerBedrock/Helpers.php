@@ -8,43 +8,46 @@ class Helpers
         $machine = new Machine();
         $machine->ensure();
 
-        $mysql_name = get('docker.container') . '_mysql';
+        $mysql_name = env('container') . '_mysql';
         $mysql = new Mysql($mysql_name);
         $mysql->ensure();
 
-        $elastic_name = get('docker.container') . '_elastic';
+        $elastic_name = env('container') . '_elastic';
         $elastic = new Elasticsearch($elastic_name);
         $elastic->ensure();
 
-        $web_name = basename(EkAndreas\DockerBedrock\Helpers::getProjectDir()).'_web';
+        $web_name = basename(Helpers::getProjectDir());
+        $web_name .= '_web';
         $web = new Web($web_name);
         $web->ensure();
     }
 
     static function stop() {
-        $mysql_name = get('docker.container') . '_mysql';
+        $mysql_name = env('container') . '_mysql';
         $mysql = new Mysql($mysql_name);
         $mysql->stop();
 
-        $elastic_name = get('docker.container') . '_elastic';
+        $elastic_name = env('container') . '_elastic';
         $elastic = new Elasticsearch($elastic_name);
         $elastic->stop();
 
-        $web_name = basename(EkAndreas\DockerBedrock\Helpers::getProjectDir()).'_web';
-        $web = new Web($web_name);
-        $web->stop();
+        $web_name = basename(Helpers::getProjectDir());
+        $web_name .= '_web';
+        //$web = new Web($web_name);
+        //$web->stop();
     }
 
     static function kill() {
-        $mysql_name = get('docker.container') . '_mysql';
+        $mysql_name = env('container') . '_mysql';
         $mysql = new Mysql($mysql_name);
         $mysql->kill();
 
-        $elastic_name = get('docker.container') . '_elastic';
+        $elastic_name = env('container') . '_elastic';
         $elastic = new Elasticsearch($elastic_name);
         $elastic->kill();
 
-        $web_name = basename(EkAndreas\DockerBedrock\Helpers::getProjectDir()).'_web';
+        $web_name = basename(Helpers::getProjectDir());
+        $web_name .= '_web';
         $web = new Web($web_name);
         $web->kill();
     }
