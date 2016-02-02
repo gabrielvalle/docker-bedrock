@@ -1,4 +1,5 @@
 <?php
+
 namespace EkAndreas\DockerBedrock;
 
 class Web extends Container implements ContainerInterface
@@ -18,7 +19,7 @@ class Web extends Container implements ContainerInterface
 
     public function exists()
     {
-        $command = "docker ps -a";
+        $command = 'docker ps -a';
         $output = Helpers::doLocal($command);
 
         if (preg_match('/'.$this->container.'/i', $output, $matches)) {
@@ -30,31 +31,31 @@ class Web extends Container implements ContainerInterface
 
     public function run()
     {
-        writeln('<comment>New web container ' . $this->container . '</comment>');
+        writeln('<comment>New web container '.$this->container.'</comment>');
 
         $command = "cd {$this->dir} && docker images";
         $output = Helpers::doLocal($command);
 
-        $matches=null;
+        $matches = null;
         if (!preg_match('/'.$this->image.'\s.*latest\s*([[:alnum:]]+).*/i', $output, $matches)) {
 
             // shift Dockerfile?
             if (file_exists(Helpers::getProjectDir().'/Dockerfile')) {
-                copy(Helpers::getProjectDir().'/Dockerfile',Helpers::getPackageDir().'/Dockerfile');
+                copy(Helpers::getProjectDir().'/Dockerfile', Helpers::getPackageDir().'/Dockerfile');
             }
-                     
+
             // shift php.ini?
             if (file_exists(Helpers::getProjectDir().'/config/php.ini')) {
-                copy(Helpers::getProjectDir().'/config/php.ini',Helpers::getPackageDir().'/config/php.ini');
+                copy(Helpers::getProjectDir().'/config/php.ini', Helpers::getPackageDir().'/config/php.ini');
             }
-                     
-            writeln('<comment>Building web image ' . $this->image . '</comment>');
+
+            writeln('<comment>Building web image '.$this->image.'</comment>');
             $command = "cd {$this->dir} && docker build -t {$this->image} --no-cache=true --rm=true .";
             Helpers::doLocal($command, 999);
             preg_match('/'.$this->image.'\s.*latest\s*([[:alnum:]]+).*/i', $output, $matches);
         }
 
-        writeln('<comment>Starting new web container ' . $this->container . '</comment>');
+        writeln('<comment>Starting new web container '.$this->container.'</comment>');
         $command = "cd $this->dir && docker run -tid -p 80:80 -v '$this->webdir:/var/www/html' --name $this->container $this->image:latest";
         Helpers::doLocal($command, 999);
         Helpers::waitForPort('Waiting for web to start', $this->ip, 80);
@@ -74,10 +75,10 @@ class Web extends Container implements ContainerInterface
         $command = "docker stop $this->container";
         Helpers::doLocal($command);
     }
-    
+
     public function kill()
     {
-        if( $this->exists() ) {
+        if ($this->exists()) {
             writeln('<comment>Kill web container</comment>');
             $command = "docker rm -f $this->container";
             Helpers::doLocal($command);
@@ -89,6 +90,5 @@ class Web extends Container implements ContainerInterface
             $command = "cd {$this->dir} && docker rmi $this->image";
             Helpers::doLocal($command);
         }
-
     }
 }

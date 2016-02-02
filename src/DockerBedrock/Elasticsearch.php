@@ -1,4 +1,5 @@
 <?php
+
 namespace EkAndreas\DockerBedrock;
 
 class Elasticsearch extends Container implements ContainerInterface
@@ -21,6 +22,7 @@ class Elasticsearch extends Container implements ContainerInterface
         $command = "docker inspect $this->container";
         try {
             $output = Helpers::doLocal($command);
+
             return true;
         } catch (\Exception $ex) {
             return false;
@@ -49,12 +51,12 @@ class Elasticsearch extends Container implements ContainerInterface
         $command = "docker stop $this->container";
         Helpers::doLocal($command);
     }
-    
+
     public function kill()
     {
-        if( $this->exists() ) {
+        if ($this->exists()) {
             writeln("<comment>Kill elasticsearch container $this->container</comment>");
-            $command = Env::evalDocker() . "docker rm -f $this->container";
+            $command = Env::evalDocker()."docker rm -f $this->container";
             runLocally($command);
         }
     }

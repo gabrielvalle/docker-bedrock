@@ -1,20 +1,21 @@
 <?php
+
 date_default_timezone_set('TIMEZONE');
 
 include_once 'vendor/ekandreas/docker-bedrock/recipe.php';
 
 set('mysql.local', 'the_project');
-env('local.domain','the_project.dev');
+env('local.domain', 'the_project.dev');
 
-server( 'development', 'the_project.dev', 2222 )
-    ->env('deploy_path','/var/www/html')
+server('development', 'the_project.dev', 2222)
+    ->env('deploy_path', '/var/www/html')
     ->env('branch', 'master')
     ->stage('development')
-    ->user( 'docker', 'tcuser' );
+    ->user('docker', 'tcuser');
 
-server( 'production', 'ip-to-prod', 22 )
-    ->env('deploy_path','/path/to/docroot/in/prod')
-    ->user( 'root' )
+server('production', 'ip-to-prod', 22)
+    ->env('deploy_path', '/path/to/docroot/in/prod')
+    ->user('root')
     ->env('branch', 'master')
     ->stage('production')
     ->identityFile();
@@ -27,7 +28,7 @@ set('shared_dirs', ['web/app/uploads']);
 set('shared_files', ['.env', 'web/.htaccess', 'web/robots.txt']);
 set('env_vars', '/usr/bin/env');
 
-task( 'deploy', [
+task('deploy', [
     'deploy:prepare',
     'deploy:release',
     'deploy:update_code',
@@ -35,5 +36,5 @@ task( 'deploy', [
     'deploy:shared',
     'deploy:symlink',
     'cleanup',
-    'success'
-] )->desc( 'Deploy your Bedrock project, eg dep deploy production' );
+    'success',
+])->desc('Deploy your Bedrock project, eg dep deploy production');

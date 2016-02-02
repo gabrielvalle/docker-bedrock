@@ -14,7 +14,7 @@ class Machine implements ContainerInterface
 
     public function ensure()
     {
-        writeln("Ensure docker-machine ".$this->name);
+        writeln('Ensure docker-machine '.$this->name);
 
         if (!$this->exists()) {
             $this->run();
@@ -29,7 +29,7 @@ class Machine implements ContainerInterface
 
         $this->ip = Helpers::getMachineIp();
     }
-    
+
     public function run()
     {
         writeln("<comment>Create Docker machine $this->name</comment>");
@@ -37,14 +37,14 @@ class Machine implements ContainerInterface
         writeln("<comment>Docker-machine $this->name created</comment>");
         $this->ip = Helpers::getMachineIp();
     }
-    
+
     public function kill()
     {
     }
-    
+
     public function exists()
     {
-        $command = "docker-machine ls";
+        $command = 'docker-machine ls';
         $output = runLocally($command);
         if (preg_match('/'.$this->name.'/i', $output, $matches)) {
             return true;
@@ -52,7 +52,7 @@ class Machine implements ContainerInterface
             return false;
         }
     }
-    
+
     public function start()
     {
         $output = runLocally("docker-machine start $this->name", 999);

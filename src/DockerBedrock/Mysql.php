@@ -1,9 +1,9 @@
 <?php
+
 namespace EkAndreas\DockerBedrock;
 
 class Mysql extends Container implements ContainerInterface
 {
-
     public function ensure()
     {
         $ping = Helpers::portAlive($this->ip, 3306);
@@ -19,9 +19,10 @@ class Mysql extends Container implements ContainerInterface
 
     public function exists()
     {
-        $command = Env::evalDocker() . "docker inspect $this->container";
+        $command = Env::evalDocker()."docker inspect $this->container";
         try {
             $output = runLocally($command);
+
             return true;
         } catch (\Exception $ex) {
             return false;
@@ -41,7 +42,7 @@ class Mysql extends Container implements ContainerInterface
         $command = "docker run --name $this->container ";
         $command .= "-e MYSQL_ROOT_PASSWORD=$password ";
         $command .= "-e MYSQL_DATABASE=$db ";
-        if ($user!='root') {
+        if ($user != 'root') {
             $command .= "-e MYSQL_USER=$user ";
             $command .= "-e MYSQL_PASSWORD=$password ";
         }
@@ -81,10 +82,10 @@ class Mysql extends Container implements ContainerInterface
         $command = "docker stop $this->container";
         Helpers::doLocal($command);
     }
-    
+
     public function kill()
     {
-        if( $this->exists() ) {
+        if ($this->exists()) {
             writeln("<comment>Kill Mysql container $this->container</comment>");
             $command = "docker rm -f $this->container";
             Helpers::doLocal($command);
