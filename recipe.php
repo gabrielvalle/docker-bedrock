@@ -30,3 +30,8 @@ task('docker:halt', function () {
 task('docker:kill', function () {
     Helpers::kill();
 });
+
+task('wpinit', function () {
+	$server = env('server');
+	runLocally("wp core install --url='{$server['name']}' --title='{$server['name']}' --admin_user='admin' --admin_password='admin' --admin_email='admin@{$server['name']}'");
+});

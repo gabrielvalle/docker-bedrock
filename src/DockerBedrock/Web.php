@@ -44,6 +44,11 @@ class Web extends Container implements ContainerInterface
                 copy(Helpers::getProjectDir().'/Dockerfile', Helpers::getPackageDir().'/Dockerfile');
             }
 
+            // shift docker.conf?
+            if (file_exists(Helpers::getProjectDir().'/config/docker.conf')) {
+                copy(Helpers::getProjectDir().'/config/docker.conf', Helpers::getPackageDir().'/conf/docker.conf');
+            }
+
             // shift php.ini?
             if (file_exists(Helpers::getProjectDir().'/config/php.ini')) {
                 copy(Helpers::getProjectDir().'/config/php.ini', Helpers::getPackageDir().'/config/php.ini');
