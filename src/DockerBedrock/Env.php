@@ -18,7 +18,7 @@ class Env
     {
         $dotenv = new \Dotenv\Dotenv(Helpers::getProjectDir());
         $dotenv->load();
-        $dotenv->required(['DB_NAME', 'DB_USER', 'DB_PASSWORD']);
+        //$dotenv->required(['DB_NAME', 'DB_USER', 'DB_PASSWORD']);
 
         return $dotenv;
     }

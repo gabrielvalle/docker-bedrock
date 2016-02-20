@@ -34,9 +34,18 @@ class Mysql extends Container implements ContainerInterface
         writeln("<comment>Run/new mysql container $this->container</comment>");
 
         $env = Env::getDotEnv();
+        
         $db = getenv('DB_NAME');
+        if (empty($db)) {
+            $db = getenv('DB_DATABASE'); // Laravel support
+        }
+
         $password = getenv('DB_PASSWORD');
+
         $user = getenv('DB_USER');
+        if (empty($user)) {
+            $user = getenv('DB_USERNAME'); // Laravel support
+        }
 
         $version = has('mysql.version') ? get('mysql.version') : '5.6';
         $command = "docker run --name $this->container ";
@@ -54,10 +63,23 @@ class Mysql extends Container implements ContainerInterface
     public function start()
     {
         $env = Env::getDotEnv();
+
         $db = getenv('DB_NAME');
+        if (empty($db)) {
+            $db = getenv('DB_DATABASE'); // Laravel support
+        }
+
         $db_tests = getenv('DB_NAME').'_tests';
+        if (empty($db_tests)) {
+            $db_tests = getenv('DB_DATABASE'); // Laravel support
+        }
+
         $password = getenv('DB_PASSWORD');
+
         $user = getenv('DB_USER');
+        if (empty($user)) {
+            $user = getenv('DB_USERNAME'); // Laravel support
+        }
 
         writeln("<comment>Start existing mysql $this->container</comment>");
         $command = "docker start $this->container";
