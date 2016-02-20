@@ -9,7 +9,7 @@ use EkAndreas\DockerBedrock\Helpers;
 $dir = Helpers::getProjectDir();
 require_once $dir.'/vendor/autoload.php';
 
-include_once $dir.'/vendor/deployer/deployer/recipe/common.php';
+include_once 'common.php';
 
 task('docker:start', function () {
     Helpers::start();
