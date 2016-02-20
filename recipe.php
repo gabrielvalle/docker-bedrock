@@ -32,6 +32,6 @@ task('docker:kill', function () {
 });
 
 task('wpinit', function () {
-	$server = env('server');
-	runLocally("wp core install --url='{$server['name']}' --title='{$server['name']}' --admin_user='admin' --admin_password='admin' --admin_email='admin@{$server['name']}'");
+    $server = env('server');
+    runLocally("wp core install --url='{$server['name']}' --title='{$server['name']}' --admin_user='admin' --admin_password='admin' --admin_email='admin@{$server['name']}'");
 });
