@@ -6,7 +6,7 @@ RUN a2enmod rewrite
 
 RUN pecl install xdebug-beta
 
-RUN docker-php-ext-install mysqli
+RUN docker-php-ext-install mysql mysqli pdo pdo_mysql
 
 RUN docker-php-ext-enable xdebug
 
