@@ -27,7 +27,19 @@ Install this package with composer and require-dev
 composer require ekandreas/docker-bedrock:dev-master --dev
 ```
 
-Create a deploy file in root, eg:
+Install deployer with composer and require-dev
+```bash
+composer require deployer/deployer --dev
+```
+
+Add this script to your composer.json scripts section:
+
+```json
+"post-autoload-dump": [
+    "EkAndreas\\DockerBedrock\\Installer::postAutoloadDump"
+]
+```
+
 ```php
 <?php
 include_once 'vendor/ekandreas/docker-bedrock/recipe.php';
@@ -47,10 +59,5 @@ Then browse to [theproject.dev](http://theproject.dev) and start develop your aw
 
 Stop the containers (php+mysql+elasticsearch)
 ```bash
-dep docker:stop development
+vendor/bin/dep docker:stop development
 ```
-
-## Parameters
-
-...
-

@@ -2,10 +2,10 @@
 
 date_default_timezone_set('TIMEZONE');
 
-include_once 'vendor/ekandreas/docker-bedrock/recipe.php';
+require_once 'recipe/common.php';
+require_once 'vendor/ekandreas/docker-bedrock/recipe.php';
 
-set('mysql.local', 'the_project');
-env('local.domain', 'the_project.dev');
+env('container', 'container_name_prefix');
 
 server('development', 'the_project.dev', 2222)
     ->env('deploy_path', '/var/www/html')
